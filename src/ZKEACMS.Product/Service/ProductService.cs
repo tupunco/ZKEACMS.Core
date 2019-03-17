@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 
 namespace ZKEACMS.Product.Service
 {
-    public class ProductService : ServiceBase<ProductEntity>, IProductService
+    public class ProductService : ServiceBase<ProductEntity, CMSDbContext>, IProductService
     {
         private readonly IProductTagService _productTagService;
         private readonly IProductCategoryTagService _productCategoryTagService;
@@ -45,7 +45,7 @@ namespace ZKEACMS.Product.Service
             {
                 if (GetByUrl(item.Url) != null)
                 {
-                    result.RuleViolations.Add(new RuleViolation("Url", _localize.Get("UrlÒÑ´æÔÚ")));
+                    result.RuleViolations.Add(new RuleViolation("Url", _localize.Get("Urlå·²å­˜åœ¨")));
                     return result;
                 }
             }
@@ -110,7 +110,7 @@ namespace ZKEACMS.Product.Service
             {
                 if (Count(m => m.Url == item.Url && m.ID != item.ID) > 0)
                 {
-                    result.RuleViolations.Add(new RuleViolation("Url", _localize.Get("UrlÒÑ´æÔÚ")));
+                    result.RuleViolations.Add(new RuleViolation("Url", _localize.Get("Urlå·²å­˜åœ¨")));
                     return result;
                 }
             }

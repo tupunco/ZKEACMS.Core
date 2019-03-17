@@ -14,10 +14,12 @@ using System.Linq.Expressions;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace ZKEACMS.Widget
 {
-    public abstract class WidgetService<T> : ServiceBase<T>, IWidgetPartDriver where T : WidgetBase
+    public abstract class WidgetService<T> : ServiceBase<T, CMSDbContext>, IWidgetPartDriver 
+        where T : WidgetBase
     {
         public WidgetService(IWidgetBasePartService widgetBasePartService, IApplicationContext applicationContext, CMSDbContext dbContext)
             : base(applicationContext, dbContext)
@@ -30,6 +32,10 @@ namespace ZKEACMS.Widget
         {
             get { return WidgetBasePartService.IsNeedNotifyChange; }
             set { WidgetBasePartService.IsNeedNotifyChange = value; }
+        }
+        public override IQueryable<T> Get()
+        {
+            return CurrentDbSet.AsNoTracking();
         }
         public override ServiceResult<T> Add(T item)
         {
@@ -211,7 +217,7 @@ namespace ZKEACMS.Widget
             var widget = new WidgetPackageInstaller(ApplicationContext.HostingEnvironment).Install(pack);
             if (widget != null)
             {
-                (widget as WidgetBase).Description = "°²×°";
+                (widget as WidgetBase).Description = "å®‰è£…";
                 AddWidget(widget as WidgetBase);
             }
 
