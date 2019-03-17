@@ -18,63 +18,63 @@ namespace ZKEACMS.WidgetTemplate
             new WidgetTemplateEntity<HtmlWidgetService>
             {
                 Title = "HTML",
-                GroupName = "1.é€šç”¨",
+                GroupName = "1.Í¨ÓÃ",
                 PartialView = "Widget.HTML",
                 Thumbnail = "~/images/Widget.HTML.png",
                 Order = 1
             },
             new WidgetTemplateEntity<ImageWidgetService>
             {
-                Title = "å›¾ç‰‡",
-                GroupName = "1.é€šç”¨",
+                Title = "Í¼Æ¬",
+                GroupName = "1.Í¨ÓÃ",
                 PartialView = "Widget.Image",
                 Thumbnail = "~/images/Widget.Image.png",
                 Order = 2
             },
             new WidgetTemplateEntity<CarouselWidgetService>
             {
-                Title = "ç„¦ç‚¹å›¾",
-                GroupName = "1.é€šç”¨",
+                Title = "½¹µãÍ¼",
+                GroupName = "1.Í¨ÓÃ",
                 PartialView = "Widget.Carousel",
                 Thumbnail = "~/images/Widget.Carousel.png",
                 Order = 3
             },
             new WidgetTemplateEntity<NavigationWidgetService>
             {
-                Title = "å¯¼èˆª",
-                GroupName = "1.é€šç”¨",
+                Title = "µ¼º½",
+                GroupName = "1.Í¨ÓÃ",
                 PartialView = "Widget.Navigation",
                 Thumbnail = "~/images/Widget.Navigation.png",
                 Order = 4
             },
             new WidgetTemplateEntity<VideoWidgetService>
             {
-                Title = "è§†é¢‘",
-                GroupName = "1.é€šç”¨",
+                Title = "ÊÓÆµ",
+                GroupName = "1.Í¨ÓÃ",
                 PartialView = "Widget.Video",
                 Thumbnail = "~/images/Widget.Video.png",
                 Order = 5
             },
             new WidgetTemplateEntity<BreadcrumbWidgetService>
             {
-                Title = "è·¯å¾„å¯¼èˆª",
-                GroupName = "1.é€šç”¨",
+                Title = "Â·¾¶µ¼º½",
+                GroupName = "1.Í¨ÓÃ",
                 PartialView = "Widget.Breadcrumb",
                 Thumbnail = "~/images/Widget.Breadcrumb.png",
                 Order = 6
             },
             new WidgetTemplateEntity<ScriptWidgetService>
             {
-                Title = "è„šæœ¬",
-                GroupName = "1.é€šç”¨",
+                Title = "½Å±¾",
+                GroupName = "1.Í¨ÓÃ",
                 PartialView = "Widget.Script",
                 Thumbnail = "~/images/Widget.Script.png",
                 Order = 7
             },
             new WidgetTemplateEntity<StyleSheetWidgetService>
             {
-                Title = "æ ·å¼",
-                GroupName = "1.é€šç”¨",
+                Title = "ÑùÊ½",
+                GroupName = "1.Í¨ÓÃ",
                 PartialView = "Widget.StyleSheet",
                 Thumbnail = "~/images/Widget.StyleSheet.png",
                 Order = 8

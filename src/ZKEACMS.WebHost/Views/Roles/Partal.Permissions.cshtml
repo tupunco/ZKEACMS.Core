@@ -1,4 +1,4 @@
-@model IEnumerable<Easy.Modules.Role.Permission>
+﻿@model IEnumerable<Easy.Modules.Role.Permission>
 
 @{
     var AllPermission = PermissionKeys.KnownPermissions.Where(m => m.IsAvailable == null || m.IsAvailable());

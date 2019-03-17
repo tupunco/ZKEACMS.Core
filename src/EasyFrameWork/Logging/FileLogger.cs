@@ -1,4 +1,4 @@
-/* http://www.zkea.net/ 
+﻿/* http://www.zkea.net/ 
  * Copyright 2018 ZKEASOFT 
  * http://www.zkea.net/licenses */
 using Microsoft.AspNetCore.Hosting;
@@ -45,7 +45,7 @@ namespace Easy.Logging
                             writer.WriteLine($"{item.Key}:{item.Value}");
                         }
                     }
-
+                    
                     writer.WriteLine(_httpContextAccessor.HttpContext.Request.GetAbsoluteUrl());
                 }
                 writer.WriteLine(Split);
@@ -79,16 +79,9 @@ namespace Easy.Logging
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            if (IsEnabled(logLevel))
+            if (IsEnabled(logLevel) && exception != null)
             {
-                if (exception == null)
-                {
-                    WriteInfo(formatter(state, exception));
-                }
-                else
-                {
-                    WriteInfo(exception.ToString());
-                }
+                WriteInfo(exception.ToString());
             }
         }
     }

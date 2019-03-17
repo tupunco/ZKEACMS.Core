@@ -7,15 +7,7 @@
         return;
     }
     Style.Reqiured("Easy").AtFoot();
-    CMSApplicationContext appContext = ApplicationContext as CMSApplicationContext;
-    foreach (var item in appContext.Styles)
-    {
-        Style.Reqiured(item).AtFoot();
-    }
-    foreach (var item in appContext.Scripts)
-    {
-        Script.Reqiured(item).AtFoot();
-    }
+
 }
 <!-- http://www.zkea.net/ Copyright 2017 ZKEASOFT http://www.zkea.net/licenses -->
 <!DOCTYPE html>
@@ -38,6 +30,9 @@
 
     <link href="@Url.PathContent(Model.Page.Favicon)" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0" />
+
+    @StyleAtHead()
+    @ScriptAtHead()
     @if (Model.CurrentTheme != null)
     {
         if (hostingEnvironment.IsDevelopment())
@@ -49,17 +44,11 @@
             <link type="text/css" async rel="stylesheet" href="@Url.Content(Model.CurrentTheme.Url)" />
         }
     }
-    @StyleAtHead()
-    @ScriptAtHead()
-    @foreach (var item in appContext.HeaderPart)
-    {
-        @item
-    }
 </head>
 <body class="front">
     @if (ViewContext.HttpContext.User.Identity.IsAuthenticated && (ApplicationContext as CMSApplicationContext).PageMode != ZKEACMS.Filter.PageViewMode.ViewOnly)
     {
-        <div class="preview-toolbar hover-text hidden-xs">
+        <div class="preview-toolbar hover-text">
             <div class="btn-group">
                 <a class="btn btn-primary sort-handle">
                     <i class="glyphicon glyphicon-move"></i>
@@ -159,10 +148,6 @@
     @if (!Model.Page.Script.IsNullOrEmpty())
     {
         <script type="text/javascript" src="@Url.Content(Model.Page.Script)"></script>
-    }    
-    @foreach (var item in appContext.FooterPart)
-    {
-        @item
     }
 </body>
 

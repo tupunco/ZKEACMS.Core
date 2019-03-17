@@ -2,14 +2,13 @@
 using Easy.Constant;
 using Easy.MetaData;
 using Easy.Models;
-using Easy.RepositoryPattern;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ZKEACMS.Extend;
 
 namespace ZKEACMS.Product.Models
 {
-    [DataTable("ProductCategory")]
+    [Table("ProductCategory")]
     public class ProductCategory : EditorEntity
     {
         [Key]

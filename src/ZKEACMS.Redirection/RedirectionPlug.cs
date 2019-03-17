@@ -1,4 +1,4 @@
-/* http://www.zkea.net/ 
+﻿/* http://www.zkea.net/ 
  * Copyright 2017 ZKEASOFT 
  * http://www.zkea.net/licenses 
  */
@@ -35,7 +35,6 @@ namespace ZKEACMS.Redirection
         {
             yield return new AdminMenu
             {
-                Group = "系统",
                 Title = "URL重定向",
                 Url = "~/Admin/UrlRedirection",
                 Icon = "glyphicon-random",
@@ -58,15 +57,15 @@ namespace ZKEACMS.Redirection
         {
             yield return new PermissionDescriptor
             {
-                Module = "设置",
-                Title = "查看URL重定向",
+                Module = "URL重定向",
+                Title = "查看重定向",
                 Description = "查看重定向",
                 Key = PermissionKeys.ViewUrlRedirect
             };
             yield return new PermissionDescriptor
             {
-                Module = "设置",
-                Title = "管理URL重定向",
+                Module = "URL重定向",
+                Title = "管理重定向",
                 Description = "管理重定向",
                 Key = PermissionKeys.ManageUrlRedirect
             };

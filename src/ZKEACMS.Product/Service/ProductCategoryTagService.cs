@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace ZKEACMS.Product.Service
 {
-    public class ProductCategoryTagService : ServiceBase<ProductCategoryTag, CMSDbContext>, IProductCategoryTagService
+    public class ProductCategoryTagService : ServiceBase<ProductCategoryTag>, IProductCategoryTagService
     {
         private readonly IProductTagService _productTagService;
         public ProductCategoryTagService(IApplicationContext applicationContext, IProductTagService productTagService, CMSDbContext dbContext) : base(applicationContext, dbContext)

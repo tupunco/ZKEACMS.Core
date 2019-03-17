@@ -1,4 +1,4 @@
-/* http://www.zkea.net/ 
+﻿/* http://www.zkea.net/ 
  * Copyright 2018 ZKEASOFT 
  * http://www.zkea.net/licenses */
 using System;
@@ -8,7 +8,6 @@ using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyModel;
 
 namespace Easy.Mvc.Plugin
 {
@@ -17,7 +16,6 @@ namespace Easy.Mvc.Plugin
         public Assembly Assembly { get; set; }
         public string CurrentPluginPath { get; set; }
         public IHostingEnvironment HostingEnvironment { get; set; }
-        public List<CompilationLibrary> Dependency { get; set; }
 
         public virtual void ConfigureApplication(IApplicationBuilder app, IHostingEnvironment env)
         {

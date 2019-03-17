@@ -1,4 +1,4 @@
-@model ZKEACMS.Common.Models.ScriptWidget
+﻿@model ZKEACMS.Common.Models.ScriptWidget
 @if (Model.Script.IsNullOrEmpty())
 {
     return;
@@ -12,8 +12,4 @@ else
     <script type="text/javascript">
         @Html.Raw(Model.Script)
     </script>
-}
-@if (ApplicationContext.As<CMSApplicationContext>().IsDesignMode)
-{
-    <pre class="code" code="JavaScript">@Model.Script</pre>
 }

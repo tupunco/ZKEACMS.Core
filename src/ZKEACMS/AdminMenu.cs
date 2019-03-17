@@ -1,4 +1,4 @@
-/* http://www.zkea.net/ 
+﻿/* http://www.zkea.net/ 
  * Copyright 2018 ZKEASOFT 
  * http://www.zkea.net/licenses */
 
@@ -15,7 +15,6 @@ namespace ZKEACMS
         public int Order { get; set; }
         public string PermissionKey { get; set; }
         public Func<bool> HasPermission { get; set; }
-        public string Group { get; set; }
         public IEnumerable<AdminMenu> Children { get; set; }
     }
     public static class AdminMenus
@@ -62,52 +61,43 @@ namespace ZKEACMS
             },
             new AdminMenu
             {
+                Title = "全局内容",
+                Icon = "glyphicon-cloud",
+                Url = "~/admin/Rule",
+                Order = 3,
+                PermissionKey = PermissionKeys.ViewPage
+            },
+            new AdminMenu
+            {
                 Title = "导航",
                 Icon = "glyphicon-retweet",
                 Url = "~/admin/Navigation",
-                Order = 3,
+                Order = 4,
                 PermissionKey = PermissionKeys.ViewNavigation
             },
             new AdminMenu
             {
-                Title = "基础内容",
-                Icon = "glyphicon-tree-deciduous",
-                Order = 4,
-                Children = new List<AdminMenu>
-                {
-                    new AdminMenu
-                    {
-                        Title = "条件规则",
-                        Icon = "glyphicon-cloud",
-                        Url = "~/admin/Rule",
-                        Order = 1,
-                        PermissionKey = PermissionKeys.ViewPage
-                    },
-                    new AdminMenu
-                    {
-                        Title = "焦点图",
-                        Icon = "glyphicon-eye-open",
-                        Url = "~/admin/Carousel",
-                        Order = 2,
-                        PermissionKey = PermissionKeys.ViewCarousel
-                    },
-                    new AdminMenu
-                    {
-                        Title = "媒体库",
-                        Icon = "glyphicon-picture",
-                        Url = "~/admin/Media",
-                        Order = 3,
-                        PermissionKey = PermissionKeys.ViewMedia
-                    },
-                    new AdminMenu
-                    {
-                        Title = "主题",
-                        Icon = "glyphicon-blackboard",
-                        Url = "~/admin/Theme",
-                        Order = 4,
-                        PermissionKey = PermissionKeys.ViewTheme
-                    }
-                }
+                Title = "主题",
+                Icon = "glyphicon-blackboard",
+                Url = "~/admin/Theme",
+                Order = 5,
+                PermissionKey = PermissionKeys.ViewTheme
+            },
+            new AdminMenu
+            {
+                Title = "媒体库",
+                Icon = "glyphicon-picture",
+                Url = "~/admin/Media",
+                Order = 6,
+                PermissionKey = PermissionKeys.ViewMedia
+            },
+            new AdminMenu
+            {
+                Title = "焦点图",
+                Icon = "glyphicon-eye-open",
+                Url = "~/admin/Carousel",
+                Order = 7,
+                PermissionKey = PermissionKeys.ViewCarousel
             },
             new AdminMenu
             {
@@ -165,19 +155,19 @@ namespace ZKEACMS
                     },
                     new AdminMenu
                     {
-                        Title = "翻译",
-                        Icon = "glyphicon-cog",
-                        Url = "~/admin/Language",
-                        Order = 7,
-                        PermissionKey = PermissionKeys.ManageLanguage
-                    },
-                    new AdminMenu
-                    {
                         Title = "其它设置",
                         Icon = "glyphicon-cog",
                         Url = "~/admin/ApplicationSetting",
-                        Order = 100,
+                        Order = 7,
                         PermissionKey = PermissionKeys.ViewApplicationSetting
+                    },
+                    new AdminMenu
+                    {
+                        Title = "翻译",
+                        Icon = "glyphicon-cog",
+                        Url = "~/admin/Language",
+                        Order = 8,
+                        PermissionKey = PermissionKeys.ManageLanguage
                     }
                 }
             }

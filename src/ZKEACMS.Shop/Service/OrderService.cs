@@ -1,4 +1,4 @@
-using Easy.RepositoryPattern;
+﻿using Easy.RepositoryPattern;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using Easy.Extend;
 
 namespace ZKEACMS.Shop.Service
 {
-    public class OrderService : ServiceBase<Order, CMSDbContext>, IOrderService
+    public class OrderService : ServiceBase<Order>, IOrderService
     {
         private readonly IOrderItemService _orderItemService;
         private readonly IEnumerable<IPaymentService> _paymentServices;
@@ -47,10 +47,8 @@ namespace ZKEACMS.Shop.Service
                 }
                 return serviceResult;
             }
-            ServiceResult<bool> result = new ServiceResult<bool>
-            {
-                Result = false
-            };
+            ServiceResult<bool> result = new ServiceResult<bool>();
+            result.Result = false;
             result.RuleViolations.Add(new RuleViolation("Error", "只能关闭未支付的订单"));
             return result;
         }
@@ -100,10 +98,8 @@ namespace ZKEACMS.Shop.Service
                 }
                 return result;
             }
-            ServiceResult<bool> failed = new ServiceResult<bool>
-            {
-                Result = false
-            };
+            ServiceResult<bool> failed = new ServiceResult<bool>();
+            failed.Result = false;
             if (order.PaymentID.IsNullOrEmpty())
             {
                 failed.RuleViolations.Add(new RuleViolation("Error", "退款失败，订单未付款"));

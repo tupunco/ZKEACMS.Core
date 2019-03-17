@@ -85,43 +85,27 @@
 
     .quantity-set {
         margin: 15px 0;
-        display: table;
-        background: #efefef;
-        text-align: center;
-        border: 1px solid #ccc;
+
+        label {
+            margin-right: 10px;
+        }
 
         a {
-            display: table-cell;
-            height: 35px;
-            width: 35px;
+            color: #337ab7;
             text-decoration: none;
             font-size: 16px;
-            vertical-align: middle;
 
             &:hover {
-                background: #dedede;
+                color: #2f6fa7;
             }
 
             &:active {
-                background: #d2d2d2;
+                color: #2b6598;
             }
         }
 
         .quantity {
-            display: table-cell;
-            padding: 0 5px;
-            vertical-align: middle;
-            background: #fff;
-            height: 35px;
-            width: 38px;
-            border-left: 1px solid #ccc;
-            border-right: 1px solid #ccc;
-        }
-
-        svg {
-            width: 15px;
-            height: 15px;
-            fill: #999
+            margin: 0 5px;
         }
     }
 }

@@ -6,11 +6,10 @@ using ZKEACMS;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using ZKEACMS.Extend;
-using Easy.RepositoryPattern;
 
 namespace ZKEACMS.Common.Models
 {
-    [DataTable("CarouselItem")]
+    [Table("CarouselItem")]
     public class CarouselItemEntity : EditorEntity
     {
         [Key]

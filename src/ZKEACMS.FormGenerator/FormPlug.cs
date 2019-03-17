@@ -1,4 +1,4 @@
-/* http://www.zkea.net/ 
+﻿/* http://www.zkea.net/ 
  * Copyright 2017 ZKEASOFT 
  * http://www.zkea.net/licenses 
  *
@@ -54,7 +54,7 @@ namespace ZKEACMS.FormGenerator
                     }
                 },
                 Icon = "glyphicon-list-alt",
-                Order = 12
+                Order = 10
             };
         }
 

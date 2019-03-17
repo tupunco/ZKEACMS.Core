@@ -1,11 +1,10 @@
-/*!
+﻿/*!
  * http://www.zkea.net/
  * Copyright 2017 ZKEASOFT
  * http://www.zkea.net/licenses
  */
 using Easy.MetaData;
 using Easy.Models;
-using Easy.RepositoryPattern;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ZKEACMS.Shop.Models
 {
-    [DataTable("OrderItem")]
+    [Table("OrderItem")]
     public class OrderItem : EditorEntity
     {
         [Key]

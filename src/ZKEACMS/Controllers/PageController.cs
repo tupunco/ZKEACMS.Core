@@ -19,19 +19,32 @@ using ZKEACMS.Layout;
 using ZKEACMS.Page;
 using ZKEACMS.Setting;
 using ZKEACMS.Widget;
+using ZKEACMS.Zone;
 using ZKEACMS.Rule;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ZKEACMS.Controllers
 {
     public class PageController : BasicController<PageEntity, string, IPageService>
     {
-        public PageController(IPageService service)
+        private readonly ICookie _cookie;
+        private readonly ILayoutService _layoutService;
+        private readonly IWidgetBasePartService _widgetService;
+        private readonly IRuleService _ruleService;
+        private readonly IApplicationSettingService _applicationSettingService;
+        public PageController(IPageService service,
+            ICookie cookie,
+            ILayoutService layoutService,
+            IWidgetBasePartService widgetService,
+            IRuleService ruleService,
+            IApplicationSettingService applicationSettingService)
             : base(service)
         {
+            _cookie = cookie;
+            _layoutService = layoutService;
+            _widgetService = widgetService;
+            _ruleService = ruleService;
+            _applicationSettingService = applicationSettingService;
         }
-
         [Widget]
         public IActionResult Main()
         {
@@ -45,8 +58,7 @@ namespace ZKEACMS.Controllers
         [DefaultAuthorize(Policy = PermissionKeys.ViewPage)]
         public JsonResult GetPageTree()
         {
-            IApplicationSettingService applicationSettingService = HttpContext.RequestServices.GetService<IApplicationSettingService>();
-            var expandAll = applicationSettingService.Get(SettingKeys.ExpandAllPage, "true");
+            var expandAll = _applicationSettingService.Get(SettingKeys.ExpandAllPage, "true");
             var pages = Service.Get(m => !m.IsPublishedPage).OrderBy(m => m.DisplayOrder);
             var node = new Tree<PageEntity>().Source(pages).ToNode(m => m.ID, m => m.PageName, m => m.ParentId, "#", expandAll.Equals("true", StringComparison.OrdinalIgnoreCase));
             return Json(node);
@@ -148,7 +160,7 @@ namespace ZKEACMS.Controllers
         [EditWidget, DefaultAuthorize(Policy = PermissionKeys.ManagePage)]
         public IActionResult Design(string ID)
         {
-            ViewBag.CanPasteWidget = HttpContext.RequestServices.GetService<ICookie>().GetValue<string>(Const.CopyWidgetCookie).IsNotNullAndWhiteSpace();
+            ViewBag.CanPasteWidget = _cookie.GetValue<string>(Const.CopyWidgetCookie).IsNotNullAndWhiteSpace();
             return View();
         }
         [ViewPage, DefaultAuthorize(Policy = PermissionKeys.ViewPage)]
@@ -194,11 +206,8 @@ namespace ZKEACMS.Controllers
         [DefaultAuthorize(Policy = PermissionKeys.ViewPage)]
         public IActionResult PageZones(QueryContext context)
         {
-            ILayoutService layoutService = HttpContext.RequestServices.GetService<ILayoutService>();
-            IWidgetBasePartService widgetBasePartService = HttpContext.RequestServices.GetService<IWidgetBasePartService>();
-            IRuleService ruleService= HttpContext.RequestServices.GetService<IRuleService>();
             var page = Service.Get(context.PageID);
-            var layout = layoutService.GetByPage(page);
+            var layout = _layoutService.GetByPage(page);
             var viewModel = new LayoutZonesViewModel
             {
                 Page = page,
@@ -206,10 +215,10 @@ namespace ZKEACMS.Controllers
                 PageID = context.PageID,
                 LayoutID = layout.ID,
                 Zones = layout.Zones,
-                Widgets = widgetBasePartService.GetAllByPage(page),
+                Widgets = _widgetService.GetAllByPage(page),
                 LayoutHtml = layout.Html
             };
-            var rules = ruleService.GetMatchRule(new RuleWorkContext
+            var rules = _ruleService.GetMatchRule(new RuleWorkContext
             {
                 Url = Url.Content(page.Url),
                 UserAgent = Request.Headers["User-Agent"]
@@ -217,7 +226,7 @@ namespace ZKEACMS.Controllers
             if (rules.Any())
             {
                 var rulesID = rules.Select(m => m.RuleID).ToArray();
-                var ruleWidgets = widgetBasePartService.GetAllByRule(rulesID);
+                var ruleWidgets = _widgetService.GetAllByRule(rulesID);
                 ruleWidgets.Each(widget =>
                 {
                     var zone = layout.Zones.FirstOrDefault(z => z.ZoneName == rules.First(m => m.RuleID == widget.RuleID).ZoneName);

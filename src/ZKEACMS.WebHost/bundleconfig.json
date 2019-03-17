@@ -172,11 +172,5 @@
     "inputFiles": [
       "wwwroot/js/tinymce/plugins/imagelocal/plugin.js"
     ]
-  },
-  {
-    "outputFileName": "wwwroot/css/rule.min.css",
-    "inputFiles": [
-      "wwwroot/css/rule.css"
-    ]
   }
 ]

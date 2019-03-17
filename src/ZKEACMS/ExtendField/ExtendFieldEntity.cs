@@ -4,11 +4,10 @@ using Easy.MetaData;
 using Easy.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Easy.RepositoryPattern;
 
 namespace ZKEACMS.ExtendField
 {
-    [DataTable("ExtendField")]
+    [Table("ExtendField")]
     public class ExtendFieldEntity : EditorEntity
     {
         [Key]

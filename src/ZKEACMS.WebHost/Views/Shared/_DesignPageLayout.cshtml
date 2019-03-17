@@ -1,4 +1,4 @@
-@using Microsoft.AspNetCore.Hosting
+﻿@using Microsoft.AspNetCore.Hosting
 @model LayoutEntity
 @{
     if (Model == null)
@@ -27,6 +27,8 @@
     <title>[@L("设计")]@Model.Page.Title</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
+    @StyleAtHead()
+    @ScriptAtHead()
     @if (Model.CurrentTheme != null)
     {
         if (hostingEnvironment.IsDevelopment())
@@ -38,8 +40,6 @@
             <link type="text/css" rel="stylesheet" href="@Url.Content(Model.CurrentTheme.Url)" />
         }
     }
-    @StyleAtHead()
-    @ScriptAtHead()
 </head>
 <body class="front">
     <nav id="toolBar" class="navbar navbar-inverse navbar-fixed-top">
@@ -83,9 +83,6 @@
                                 <i class="glyphicon glyphicon-eye-open"></i>
                                 @L("预览")
                             </a>
-                            <button class="btn btn-primary mobile-preview" data-toggle="modal" data-target="#mobile-frame">
-                                <i class="glyphicon glyphicon-phone"></i>
-                            </button>
                             <a class="btn btn-primary" href="@Url.Action("Index", "Page", new {PageID = Model.Page.ID})">
                                 <i class="glyphicon glyphicon-th-list"></i>
                                 @L("概览")
@@ -136,21 +133,7 @@
     <div id="containers" class="pagePreview design-border">
         @RenderBody()
     </div>
-    
-    <div class="modal fade" id="mobile-frame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-src="@Url.Action("ViewPage","Page",new { Model.Page.ID })">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">                
-                <div class="modal-body">
-                    <div class="close-button clearfix">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                    </div>
-                    <div class="mobile">
-                        <iframe frameborder="0" scrolling="no" src="about:blank"></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
     @StyleAtFoot()
     @ScriptAtFoot()
     @if (!Model.Style.IsNullOrEmpty())

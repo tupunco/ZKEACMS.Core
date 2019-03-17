@@ -280,18 +280,10 @@ $(function () {
             }
         }
 
-        var scroll = $(".menu-item.active", mainMenu).offset().top - mainMenu.offset().top;
-        var leftMenu = document.querySelector('#left-menu');
-        function setHeight() {
-            leftMenu.style.height = (window.innerHeight - 133) + "px";
-        }
-        setHeight();
-        var scrollBar = window.Scrollbar.init(leftMenu);
-        $(window).on("resize", function () {
-            Easy.Processor(setHeight, 500);
-        })
+        mainMenu.slimscroll({ height: $(window).height() - 170 });
+        var scroll = mainMenu.scrollTop() + $(".menu-item.active", mainMenu).offset().top - mainMenu.offset().top - (mainMenu.height() / 2);
         if (scroll > 0) {
-            scrollBar.scrollTop = scroll/2;
+            mainMenu.scrollTop(scroll);
         }
     }
 

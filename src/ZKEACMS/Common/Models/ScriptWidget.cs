@@ -4,11 +4,10 @@ using Easy.MetaData;
 using ZKEACMS.MetaData;
 using ZKEACMS.Widget;
 using System.ComponentModel.DataAnnotations.Schema;
-using Easy.RepositoryPattern;
 
 namespace ZKEACMS.Common.Models
 {
-    [DataTable("ScriptWidget")]
+    [Table("ScriptWidget")]
     public class ScriptWidget : BasicWidget
     {
         public string Script { get; set; }

@@ -3,11 +3,10 @@ using System;
 using Easy.MetaData;
 using System.ComponentModel.DataAnnotations.Schema;
 using ZKEACMS.Extend;
-using Easy.RepositoryPattern;
 
 namespace ZKEACMS.SectionWidget.Models
 {
-    [DataTable("SectionContentImage")]
+    [Table("SectionContentImage")]
     public class SectionContentImage : SectionContentBasic
     {
         public string ImageSrc { get; set; }

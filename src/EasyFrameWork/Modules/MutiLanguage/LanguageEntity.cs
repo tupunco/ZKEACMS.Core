@@ -5,11 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Easy.Models;
 using System;
 using Easy.Extend;
-using Easy.RepositoryPattern;
 
 namespace Easy.Modules.MutiLanguage
 {
-    [DataTable("Language")]
+    [Table("Language")]
     public class LanguageEntity
     {
         [NotMapped]

@@ -199,11 +199,11 @@ namespace Easy.Extend
         }
         public static string ToFilePath(this string path)
         {
-            return Path.Combine(path.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries));
+            return string.Join(Path.DirectorySeparatorChar.ToString(), path.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
         }
-        public static string CombinePath(this string p, string path)
+        public static string CombinePath(this string p,string path)
         {
-            return p.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar + path.ToFilePath();
+            return p + Path.DirectorySeparatorChar + path;
         }
     }
 }

@@ -8,11 +8,10 @@ using Easy.Models;
 using ZKEACMS.ExtendField;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Easy.RepositoryPattern;
 
 namespace ZKEACMS.Page
 {
-    [DataTable("CMS_Page")]
+    [Table("CMS_Page")]
     public class PageEntity : EditorEntity
     {
         [Key]

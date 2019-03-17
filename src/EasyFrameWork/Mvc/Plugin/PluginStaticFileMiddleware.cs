@@ -1,4 +1,4 @@
-/* http://www.zkea.net/ 
+﻿/* http://www.zkea.net/ 
  * Copyright 2018 ZKEASOFT 
  * http://www.zkea.net/licenses */
 using Easy.Extend;
@@ -81,7 +81,7 @@ namespace Easy.Mvc.Plugin
         {
             string parentPath = new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName;
             string subPath = path.Replace($"/{_pluginLoader.PluginFolderName()}/", "/").ToFilePath();
-            return parentPath.CombinePath(subPath);
+            return $"{parentPath}{subPath}";
         }
     }
 }

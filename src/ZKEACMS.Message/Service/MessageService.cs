@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * http://www.zkea.net/
  * Copyright 2018 ZKEASOFT
  * http://www.zkea.net/licenses
@@ -14,7 +14,7 @@ using ZKEACMS.Setting;
 
 namespace ZKEACMS.Message.Service
 {
-    public class MessageService : ServiceBase<MessageEntity, CMSDbContext>, IMessageService
+    public class MessageService : ServiceBase<MessageEntity>, IMessageService
     {
         private readonly INotificationManager _notificationManager;
         private readonly IApplicationSettingService _applicationSettingService;

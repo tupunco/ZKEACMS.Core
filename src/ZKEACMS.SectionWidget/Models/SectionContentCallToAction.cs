@@ -3,11 +3,10 @@ using System;
 using Easy.MetaData;
 using System.ComponentModel.DataAnnotations.Schema;
 using ZKEACMS.Extend;
-using Easy.RepositoryPattern;
 
 namespace ZKEACMS.SectionWidget.Models
 {
-    [DataTable("SectionContentCallToAction")]
+    [Table("SectionContentCallToAction")]
     public class SectionContentCallToAction : SectionContentBasic
     {
         public string InnerText { get; set; }

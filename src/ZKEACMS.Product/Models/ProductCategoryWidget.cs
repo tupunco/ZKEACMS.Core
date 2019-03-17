@@ -9,11 +9,10 @@ using Easy;
 using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel.DataAnnotations.Schema;
 using Easy.Constant;
-using Easy.RepositoryPattern;
 
 namespace ZKEACMS.Product.Models
 {
-    [DataTable("ProductCategoryWidget")]
+    [Table("ProductCategoryWidget")]
     public class ProductCategoryWidget : BasicWidget
     {
         public int ProductCategoryID { get; set; }

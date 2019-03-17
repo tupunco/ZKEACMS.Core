@@ -4,11 +4,10 @@ using Easy.MetaData;
 using Easy.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Easy.RepositoryPattern;
 
 namespace ZKEACMS.Common.Models
 {
-    [DataTable("Carousel")]
+    [Table("Carousel")]
     public class CarouselEntity : EditorEntity
     {
         public CarouselEntity()

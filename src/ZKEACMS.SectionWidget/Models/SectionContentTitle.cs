@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using Easy.MetaData;
 using System.ComponentModel.DataAnnotations.Schema;
 using ZKEACMS.Extend;
-using Easy.RepositoryPattern;
 
 namespace ZKEACMS.SectionWidget.Models
 {
-    [DataTable("SectionContentTitle")]
+    [Table("SectionContentTitle")]
     public class SectionContentTitle : SectionContentBasic
     {
         public const string H1 = "h1";

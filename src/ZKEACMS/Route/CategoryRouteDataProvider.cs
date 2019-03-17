@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * http://www.zkea.net/
  * Copyright 2018 ZKEASOFT
  * 深圳市纸壳软件有限公司
@@ -25,9 +25,9 @@ namespace ZKEACMS.Route
                     int.TryParse(evaluator.Groups[1].Value, out categoryId);
                     return string.Empty;
                 });
-                if (categoryId > 0)
+                if (categoryId > 0 && !values.ContainsKey(StringKeys.RouteValue_Category))
                 {
-                    values.SetCategory(categoryId);
+                    values.Add(StringKeys.RouteValue_Category, categoryId);
                 }
             }
             return path;

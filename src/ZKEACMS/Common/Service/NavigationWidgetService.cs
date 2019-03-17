@@ -23,34 +23,22 @@ namespace ZKEACMS.Common.Service
         {
             _navigationService = navigationService;
         }
-        public override DbSet<NavigationWidget> CurrentDbSet => DbContext.NavigationWidget;
+        public override DbSet<NavigationWidget> CurrentDbSet => (DbContext as CMSDbContext).NavigationWidget;
         public override WidgetViewModelPart Display(WidgetBase widget, ActionContext actionContext)
         {
             var currentWidget = widget as NavigationWidget;
             var navs = _navigationService.Get()
                 .Where(m => m.Status == (int)RecordStatus.Active).OrderBy(m => m.DisplayOrder).ToList();
-
-            string path = null;
-            if (ApplicationContext.As<CMSApplicationContext>().IsDesignMode)
+            if (actionContext is ActionExecutedContext)
             {
-                var layout = actionContext.HttpContext.GetLayout();
-                if (layout != null && layout.Page != null)
-                {
-                    path = layout.Page.Url.Replace("~/", "/");
-                }
-            }
-            else if (actionContext is ActionExecutedContext)
-            {
-                path = (actionContext as ActionExecutedContext).RouteData.GetPath();
-            }
-            if (path != null)
-            {
+                string path = actionContext.HttpContext.Request.Path.Value.ToLower();
                 NavigationEntity current = null;
                 int length = 0;
+                IUrlHelper urlHelper = ((actionContext as ActionExecutedContext).Controller as Controller).Url;
                 foreach (var navigationEntity in navs)
                 {
                     if (navigationEntity.Url.IsNotNullAndWhiteSpace()
-                        && path.IndexOf((navigationEntity.Url ?? "").Replace("~/", "/").Replace(".html", string.Empty), StringComparison.OrdinalIgnoreCase) == 0
+                        && path.StartsWith(urlHelper.PathContent(navigationEntity.Url).ToLower())
                         && length < navigationEntity.Url.Length)
                     {
                         current = navigationEntity;

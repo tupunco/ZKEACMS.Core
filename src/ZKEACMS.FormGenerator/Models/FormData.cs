@@ -1,6 +1,5 @@
-using Easy.MetaData;
+﻿using Easy.MetaData;
 using Easy.Models;
-using Easy.RepositoryPattern;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +10,7 @@ using ZKEACMS.FormGenerator.Service;
 
 namespace ZKEACMS.FormGenerator.Models
 {
-    [DataTable("FormData")]
+    [Table("FormData")]
     public class FormData : EditorEntity
     {
         [Key]

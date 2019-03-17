@@ -10,7 +10,7 @@ using Easy.Extend;
 
 namespace ZKEACMS.SectionWidget.Service
 {
-    public class SectionContentProviderService : ServiceBase<SectionContentBasePart, CMSDbContext>, ISectionContentProviderService
+    public class SectionContentProviderService : ServiceBase<SectionContentBasePart>, ISectionContentProviderService
     {
         private readonly IEnumerable<ISectionContentService> _sectionContentServices;
 
@@ -18,11 +18,7 @@ namespace ZKEACMS.SectionWidget.Service
             : base(applicationContext, dbContext)
         {
             _sectionContentServices = sectionContentServices;
-        }
-        public override IQueryable<SectionContentBasePart> Get()
-        {
-            return CurrentDbSet.AsNoTracking();
-        }
+        }        
         public void Add(SectionContent item)
         {
             if (!item.Order.HasValue || item.Order.Value == 0)

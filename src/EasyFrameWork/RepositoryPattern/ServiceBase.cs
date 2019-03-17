@@ -17,18 +17,17 @@ using System.Threading.Tasks;
 
 namespace Easy.RepositoryPattern
 {
-    public abstract class ServiceBase<T, TdbContext> : IService<T>
+    public abstract class ServiceBase<T> : IService<T>
         where T : class
-        where TdbContext : DbContext
     {
-        public ServiceBase(IApplicationContext applicationContext, TdbContext dbContext)
+        public ServiceBase(IApplicationContext applicationContext, DbContext dbContext)
         {
             ApplicationContext = applicationContext;
             DbContext = dbContext;
             isWaitingSave = false;
         }
 
-        public virtual TdbContext DbContext
+        public virtual DbContext DbContext
         {
             get;
             set;
@@ -218,18 +217,6 @@ namespace Easy.RepositoryPattern
                 {
                     result = result.OrderByDescending(pagination.OrderByDescending);
                 }
-
-                if (pagination.ThenBy != null || pagination.ThenByDescending != null)
-                {
-                    if (pagination.ThenBy != null)
-                    {
-                        result = (result as IOrderedQueryable<T>).ThenBy(pagination.ThenBy);
-                    }
-                    else
-                    {
-                        result = (result as IOrderedQueryable<T>).ThenByDescending(pagination.ThenByDescending);
-                    }
-                }
             }
             return result.Skip(pagination.PageIndex * pagination.PageSize).Take(pagination.PageSize).ToList();
         }
@@ -379,13 +366,6 @@ namespace Easy.RepositoryPattern
         public virtual void BeginBulkSave()
         {
             isWaitingSave = true;
-        }
-    }
-    public abstract class ServiceBase<T> : ServiceBase<T, DbContext> 
-        where T : class
-    {
-        public ServiceBase(IApplicationContext applicationContext, DbContext dbContext) : base(applicationContext, dbContext)
-        {
         }
     }
 }

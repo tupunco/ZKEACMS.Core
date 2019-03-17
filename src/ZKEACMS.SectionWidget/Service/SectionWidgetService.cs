@@ -156,7 +156,7 @@ namespace ZKEACMS.SectionWidget.Service
             widget.ZoneID = null;
             widget.IsSystem = false;
             widget.IsTemplate = true;
-            widget.Description = "å®‰è£…";
+            widget.Description = "°²×°";
             if (!widget.Thumbnail.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && !widget.Thumbnail.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
             {
                 widget.Thumbnail = Helper.Url.Combine(Loader.PluginFolder, new DirectoryInfo(pluginRootPath).Name, "Thumbnail", Path.GetFileName(widget.Thumbnail));

@@ -13,11 +13,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Easy.Constant;
 using System.Linq;
 using ZKEACMS.Extend;
-using Easy.RepositoryPattern;
 
 namespace ZKEACMS.Product.Models
 {
-    [DataTable("ProductListWidget")]
+    [Table("ProductListWidget")]
     public class ProductListWidget : BasicWidget
     {
         public bool IsPageable { get; set; }

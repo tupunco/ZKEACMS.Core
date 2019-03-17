@@ -1,26 +1,13 @@
-@using Microsoft.AspNetCore.Hosting
-@{
-    var theme = themeService.GetCurrentTheme();
+﻿@{
+    Style.Reqiured("bootStrap").AtHead();
 }
-@inject IThemeService themeService
-@inject IHostingEnvironment hostingEnvironment
+
 <!DOCTYPE html>
 
 <html style="height:100%">
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @if (theme != null)
-    {
-        if (hostingEnvironment.IsDevelopment())
-        {
-            <link type="text/css" async rel="stylesheet" href="@Url.Content(theme.UrlDebugger)" />
-        }
-        else
-        {
-            <link type="text/css" async rel="stylesheet" href="@Url.Content(theme.Url)" />
-        }
-    }
     @StyleAtHead()
     @ScriptAtHead()
 </head>

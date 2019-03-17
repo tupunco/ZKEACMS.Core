@@ -10,7 +10,6 @@ using Easy.Mvc.Controllers;
 using Easy.Mvc.Extend;
 using Easy.Net;
 using Easy.RepositoryPattern;
-using Easy.Storage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -19,7 +18,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using ZKEACMS.Common.ViewModels;
 using ZKEACMS.Media;
 
@@ -30,16 +28,11 @@ namespace ZKEACMS.Controllers
     {
         private readonly ILogger _logger;
         private readonly WebClient _webClient;
-        private readonly IStorage _storage;
-        public MediaController(IMediaService service,
-            ILoggerFactory loggerFactory,
-            WebClient webClient,
-            IStorage storage)
+        public MediaController(IMediaService service, ILoggerFactory loggerFactory, WebClient webClient)
             : base(service)
         {
             _logger = loggerFactory.CreateLogger<MediaController>();
             _webClient = webClient;
-            _storage = storage;
         }
         [NonAction]
         public override IActionResult Index()
@@ -113,7 +106,7 @@ namespace ZKEACMS.Controllers
             return Json(entity);
         }
         [HttpPost, DefaultAuthorize(Policy = PermissionKeys.ManageMedia)]
-        public async Task<IActionResult> Upload(string parentId, string folder, long size)
+        public JsonResult Upload(string parentId, string folder, long size)
         {
             if (Request.Form.Files.Count > 0)
             {
@@ -141,7 +134,14 @@ namespace ZKEACMS.Controllers
                     Status = Request.Form.Files[0].Length == size ? (int)RecordStatus.Active : (int)RecordStatus.InActive
                 };
                 string extension = Path.GetExtension(fileName).ToLower();
-                entity.Url = await _storage.SaveFileAsync(Request.Form.Files[0].OpenReadStream(), $"{Guid.NewGuid().ToString("N")}{extension}");
+                if (ImageHelper.IsImage(extension))
+                {
+                    entity.Url = Request.SaveImage();
+                }
+                else
+                {
+                    entity.Url = Request.SaveFile();
+                }
                 if (entity.Url.IsNotNullAndWhiteSpace())
                 {
                     Service.Add(entity);
@@ -152,7 +152,7 @@ namespace ZKEACMS.Controllers
             return Json(false);
         }
         [HttpPost, DefaultAuthorize(Policy = PermissionKeys.ManageMedia)]
-        public async Task<IActionResult> AppendFile(string id, long position, long size)
+        public JsonResult AppendFile(string id, long position, long size)
         {
             var media = Service.Get(id);
             if (media != null && Request.Form.Files.Count > 0)
@@ -162,9 +162,16 @@ namespace ZKEACMS.Controllers
                     media.Status = (int)RecordStatus.Active;
                     Service.Update(media);
                 }
-                await _storage.AppendFileAsync(Request.Form.Files[0].OpenReadStream(), media.Url);
-                media.Url = Url.Content(media.Url);
-                return Json(media);
+                var file = Request.MapPath(media.Url);
+                if (System.IO.File.Exists(file))
+                {
+                    using (var fileStream = new FileStream(file, FileMode.Append))
+                    {
+                        Request.Form.Files[0].CopyTo(fileStream);
+                    }
+                    media.Url = Url.Content(media.Url);
+                    return Json(media);
+                }
             }
             return Json(false);
         }
@@ -184,8 +191,7 @@ namespace ZKEACMS.Controllers
                 {
                     media.Url = "~" + new Uri(media.Url).AbsolutePath;
                 }
-
-                _storage.Delete(media.Url);
+                Request.DeleteFile(media.Url);
             }
             else
             {
@@ -217,6 +223,7 @@ namespace ZKEACMS.Controllers
             //_webClient.Proxy = new System.Net.WebProxy("kyproxy.keyou.corp", 8080);
 
             string parentId = Service.GetImageFolder().ID;
+            string path = Request.GetUploadPath();
             foreach (var item in images)
             {
                 if (!result.ContainsKey(item))
@@ -226,7 +233,7 @@ namespace ZKEACMS.Controllers
                     {
                         ext = ".jpg";
                     }
-                    string fileName = string.Format("{0}{1}", Guid.NewGuid().ToString("N"), ext);
+                    string filePath = Path.Combine(path, string.Format("{0}{1}", Guid.NewGuid().ToString("N"), ext));
                     try
                     {
                         using (MD5 md5hash = MD5.Create())
@@ -239,16 +246,17 @@ namespace ZKEACMS.Controllers
                             }
                             else
                             {
-                                string url = _storage.SaveFile(_webClient.OpenRead(item), fileName);
+                                _webClient.DownloadFile(item, filePath);
+                                string webPath = Request.ChangeToWebPath(filePath);
                                 Service.Add(new MediaEntity
                                 {
                                     ParentID = parentId,
-                                    Title = fileName,
+                                    Title = Path.GetFileName(filePath),
                                     Status = (int)RecordStatus.Active,
-                                    Url = url,
+                                    Url = webPath,
                                     ID = id
                                 });
-                                result.Add(item, url);
+                                result.Add(item, webPath);
                             }
                         }
 
@@ -272,12 +280,6 @@ namespace ZKEACMS.Controllers
                 sBuilder.Append(data[i].ToString("x2"));
             }
             return sBuilder.ToString();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _webClient.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

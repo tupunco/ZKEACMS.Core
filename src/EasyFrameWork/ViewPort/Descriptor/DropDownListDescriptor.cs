@@ -30,29 +30,31 @@ namespace Easy.ViewPort.Descriptor
                 ILocalize localize = ServiceLocator.GetService<ILocalize>();
                 if (_souceFunc != null)
                 {
-                    Dictionary<string, string> data = new Dictionary<string, string>();
+                    _data = new Dictionary<string, string>();
                     foreach (var item in _souceFunc.Invoke())
                     {
-                        if (!data.ContainsKey(item.Key))
+                        if (!_data.ContainsKey(item.Key))
                         {
-                            data.Add(item.Key, localize.Get(item.Value));
+                            _data.Add(item.Key, localize.Get(item.Value));
                         }
                     }
-                    return data;
                 }
                 if (this.SourceType == SourceType.Dictionary)
                 {
                     IDataDictionaryService dicService = ServiceLocator.GetService<IDataDictionaryService>();
-                    Dictionary<string, string> data = new Dictionary<string, string>();
-                    var dicts = dicService.Get(m => m.DicName == this.SourceKey);
-                    foreach (DataDictionaryEntity item in dicts)
+                    if (dicService != null)
                     {
-                        if (!data.ContainsKey(item.DicValue))
+                        _data = new Dictionary<string, string>();
+
+                        var dicts = dicService.Get(m => m.DicName == this.SourceKey);
+                        foreach (DataDictionaryEntity item in dicts)
                         {
-                            data.Add(item.DicValue, localize.Get(item.Title));
+                            if (!_data.ContainsKey(item.DicValue))
+                            {
+                                _data.Add(item.DicValue, localize.Get(item.Title));
+                            }
                         }
                     }
-                    return data;
 
                 }
                 return _data ?? new Dictionary<string, string>();

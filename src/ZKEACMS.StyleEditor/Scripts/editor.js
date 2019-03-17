@@ -6,10 +6,12 @@
     var textColor = document.getElementById("t-color").value;
     var backgroundColor = document.getElementById("b-color").value;
 
+    //Border//
     var borderWidth = document.getElementById("border-width").innerHTML + "px";
     var borderColor = document.getElementById("bc-color").value;
     var borderStyle = document.getElementById("border-style").value;
 
+    //Padding & Margins//
     var padding = document.getElementById("padding-custom").value;
     if (!padding) {
         padding = document.getElementById("padding").innerHTML + "px";
@@ -19,6 +21,7 @@
         margin = document.getElementById("margin").innerHTML + "px";
     }
 
+    //Fonts//
     var fontName = document.getElementById("font-name").value;
     var fontStyle = document.getElementById("font-style").value;
     var fontWeight = document.getElementById("font-weight").value;
@@ -26,6 +29,7 @@
     var fontVariant = document.getElementById("font-variant").value;
     var lineHeight = document.getElementById("line-height").innerHTML + "px";
 
+    //Text Style//
     var textAlign = document.getElementById("text-align").value;
     var textDecoration = document.getElementById("text-decoration").value;
     var textIndent = document.getElementById("text-indent").innerHTML + "px";
@@ -33,6 +37,7 @@
     var wordSpacing = document.getElementById("word-spacing").innerHTML + "px";
     var textTransform = document.getElementById("text-transform").value;
 
+    //Background Styles//
     var backgroundImage = document.getElementById("background-image").value;
     if (backgroundImage) {
         backgroundImage = 'url(' + backgroundImage.replace("~/", "/") + ')';
@@ -43,23 +48,21 @@
     var backgroundSize = document.getElementById("background-size").value;
     var background = document.getElementById("background").value;
 
+    //Position Style//
     var cssPosition = document.getElementById("position").value;
-    var cssTop = document.getElementById("position-top").value + "px";
-    var cssLeft = document.getElementById("position-left").value + "px";
-    var cssRight = document.getElementById("position-right").value + "px";
-    var cssBottom = document.getElementById("position-bottom").value + "px";
-    var zIndex = document.getElementById("z-index").value;
+    var cssTop = document.getElementById("top").innerHTML + "px";
+    var cssLeft = document.getElementById("left").innerHTML + "px";
+    var cssRight = document.getElementById("right").innerHTML + "px";
+    var cssBottom = document.getElementById("bottom").innerHTML + "px";
 
+    //Extras//
     var cssCursor = document.getElementById("cursor").value;
     var cssVisibility = document.getElementById("visibility").value;
     var cssOverflow = document.getElementById("overflow").value;
     var cssFloat = document.getElementById("float").value;
 
-    var borderRadius = document.getElementById("border-radius-custom").value;
-    if (!borderRadius) {
-        borderRadius = document.getElementById("border-radius").innerHTML + "px";
-    }
-
+    //CSS3 Styles//
+    var borderRadius = document.getElementById("border-radius").innerHTML + "px";
     var textShadowH = document.getElementById("text-h-length").innerHTML + "px";
     var textShadowV = document.getElementById("text-v-length").innerHTML + "px";
     var textShadowB = document.getElementById("text-b-length").innerHTML + "px";
@@ -148,20 +151,17 @@
     if (cssPosition) {
         this.css.push('position:' + cssPosition);
     }
-    if (cssTop != "px") {
+    if (cssTop !== "0px") {
         this.css.push('top:' + cssTop);
     }
-    if (cssLeft != "px") {
+    if (cssLeft !== "0px") {
         this.css.push('left:' + cssLeft);
     }
-    if (cssRight != "px") {
+    if (cssRight !== "0px") {
         this.css.push('right:' + cssRight);
     }
-    if (cssBottom != "px") {
+    if (cssBottom !== "0px") {
         this.css.push('bottom:' + cssBottom);
-    }
-    if (zIndex) {
-        this.css.push('z-index:' + zIndex);
     }
     if (cssCursor) {
         this.css.push('cursor:' + cssCursor);
@@ -183,9 +183,6 @@
     }
     if (boxShadowH !== "0px" || boxShadowV !== "0px" || boxShadowB !== "0px") {
         this.css.push('box-shadow:' + boxShadowH + ' ' + boxShadowV + ' ' + boxShadowB + ' ' + boxShadowColor);
-    }
-    for (var i = 0; i < window.unKnownStyle.length; i++) {
-        this.css.push(window.unKnownStyle[i]);
     }
     this.css.push("");
     var target = window.top.$(".custom-style-target");
@@ -215,17 +212,11 @@
     } else {
         codeDiv.textContent = cssResult;
     }
-    
-    if (!window.displayStyle) {
-        window.displayStyle = $('<style type="text/css">' + cssResult + '</style>');
-        $('head').append(window.displayStyle);
-    }
-    else {
-        window.displayStyle.text(cssResult);
-    }
+
+    $('style').remove();
+    $('head').append('<style type="text/css">' + cssResult + '</style>');
     return cssResult;
 }
 $(function () {
-    $("#accordion2").height(window.innerHeight - 20);
-    window.Scrollbar.init(document.querySelector("#accordion2"), { continuousScrolling: false })
+    $("body").slimscroll({ height: window.innerHeight, color:"#b0b8c5" });
 });

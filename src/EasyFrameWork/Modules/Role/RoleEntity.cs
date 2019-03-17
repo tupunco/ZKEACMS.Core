@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Easy.MetaData;
 using Easy.Models;
-using Easy.RepositoryPattern;
 
 namespace Easy.Modules.Role
 {
-    [DataTable("Roles")]
+    [Table("Roles")]
     public class RoleEntity : EditorEntity
     {
         [Key]

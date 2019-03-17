@@ -9,12 +9,12 @@ using System;
 
 namespace ZKEACMS.Common.Service
 {
-    public class CarouselItemService : ServiceBase<CarouselItemEntity, CMSDbContext>, ICarouselItemService
+    public class CarouselItemService : ServiceBase<CarouselItemEntity>, ICarouselItemService
     {
         public CarouselItemService(IApplicationContext applicationContext, CMSDbContext dbContext) : base(applicationContext, dbContext)
         {
         }
-        public override DbSet<CarouselItemEntity> CurrentDbSet => DbContext.CarouselItem;
+        public override DbSet<CarouselItemEntity> CurrentDbSet => (DbContext as CMSDbContext).CarouselItem;
 
         public override ServiceResult<CarouselItemEntity> Add(CarouselItemEntity item)
         {
