@@ -36,19 +36,22 @@ namespace ZKEACMS.Setting
 
         public override ServiceResult<ApplicationSetting> Add(ApplicationSetting item)
         {
-            if (Count(m => m.SettingKey == item.SettingKey) == 0)
+            lock (ApplicationSetting)
             {
-                _settingCache.TryAdd(item.SettingKey, item);
-                return base.Add(item);
+                if (base.Get(item.SettingKey) == null)
+                {
+                    _settingCache.TryAdd(item.SettingKey, item);
+                    return base.Add(item);
+                }
+                var result = new ServiceResult<ApplicationSetting>();
+                result.RuleViolations.Add(new RuleViolation("SettingKey", "已经存在该键值"));
+                return result;
             }
-            var result = new ServiceResult<ApplicationSetting>();
-            result.RuleViolations.Add(new RuleViolation("SettingKey", "已经存在该键值"));
-            return result;
+
         }
         public override ApplicationSetting Get(params object[] primaryKey)
         {
-            object value;
-            if (_settingCache.TryGetValue(primaryKey[0].ToString(), out value))
+            if (_settingCache.TryGetValue(primaryKey[0].ToString(), out object value))
             {
                 return value as ApplicationSetting;
             }
@@ -63,7 +66,7 @@ namespace ZKEACMS.Setting
         public string Get(string settingKey, string defaultValue)
         {
             var setting = Get(settingKey);
-            if (setting == null || setting.Value.IsNullOrWhiteSpace())
+            if (setting == null || setting.Value == null)
             {
                 if (setting == null && defaultValue.IsNotNullAndWhiteSpace())
                 {
@@ -80,8 +83,7 @@ namespace ZKEACMS.Setting
 
         public override ServiceResult<ApplicationSetting> Update(ApplicationSetting item)
         {
-            object oldSetting;
-            if (_settingCache.TryGetValue(item.SettingKey, out oldSetting))
+            if (_settingCache.TryGetValue(item.SettingKey, out object oldSetting))
             {
                 _settingCache.TryUpdate(item.SettingKey, item, oldSetting);
             }
@@ -90,8 +92,7 @@ namespace ZKEACMS.Setting
 
         public override void Remove(ApplicationSetting item)
         {
-            object oldSetting;
-            _settingCache.TryRemove(item.SettingKey, out oldSetting);
+            _settingCache.TryRemove(item.SettingKey, out _);
             base.Remove(item);
         }
         #region Serialize Settings
@@ -114,8 +115,7 @@ namespace ZKEACMS.Setting
 
         public void Save<T>(string key, T setting) where T : class, new()
         {
-            object oldSetting;
-            if (_settingCache.TryGetValue(key, out oldSetting))
+            if (_settingCache.TryGetValue(key, out object oldSetting))
             {
                 _settingCache.TryUpdate(key, setting, oldSetting);
             }

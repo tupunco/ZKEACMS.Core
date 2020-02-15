@@ -1,13 +1,11 @@
-@using ZKEACMS.Account
+﻿@using ZKEACMS.Account
 @{
+    Style.Reqiured("bootStrap").AtHead();
     Style.Reqiured("Customer").AtHead();
     Style.Reqiured("Easy").AtHead();
-    var current = themeService.GetCurrentTheme();
-    List<AdminMenu> menu = new List<AdminMenu>();
-    userCenterLinksProvider.Each(p => menu.AddRange(p.GetLinks()));
+    IEnumerable<AdminMenu> menu = userCenterLinkService.GetLinks();
 }
-@inject IThemeService themeService
-@inject IEnumerable<IUserCenterLinksProvider> userCenterLinksProvider
+@inject IUserCenterLinkService userCenterLinkService
 <!DOCTYPE html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="zh"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="zh"> <![endif]-->
@@ -21,8 +19,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>@ViewBag.Title</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link type="text/css" async rel="stylesheet" href="@Url.Content(current.Url)" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0" />
+    @if (ApplicationContext.As<CMSApplicationContext>().OuterChainPicture)
+    {
+        <meta name="referrer" content="same-origin" />
+    }
+    @if (ApplicationContext.As<CMSApplicationContext>().EnableResponsiveDesign)
+    {
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0" />
+    }
     @StyleAtHead()
     @ScriptAtHead()
 </head>

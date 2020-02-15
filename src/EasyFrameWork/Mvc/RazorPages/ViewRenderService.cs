@@ -2,6 +2,7 @@
  * Copyright 2018 ZKEASOFT 
  * http://www.zkea.net/licenses */
 using Easy.Mvc.Plugin;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Easy.Mvc.RazorPages
 {
@@ -21,10 +23,10 @@ namespace Easy.Mvc.RazorPages
     {
         private readonly IRazorViewEngine _viewEngine;
         private readonly ITempDataProvider _tempDataProvider;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ViewRenderService(IRazorViewEngine viewEngine, ITempDataProvider tempDataProvider, IHostingEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor)
+        public ViewRenderService(IRazorViewEngine viewEngine, ITempDataProvider tempDataProvider, IWebHostEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _viewEngine = viewEngine;
             _tempDataProvider = tempDataProvider;
@@ -45,7 +47,15 @@ namespace Easy.Mvc.RazorPages
             {
                 actualViewPath = actualViewPath.Replace(pluginPath, DeveloperViewFileProvider.ProjectRootPath);
             }
-
+            else if (_hostingEnvironment.IsProduction() && actualViewPath.StartsWith(pluginPath))
+            {
+                string filePath = actualViewPath.Replace("~/", string.Empty);
+                var fileInfo = _hostingEnvironment.ContentRootFileProvider.GetFileInfo(filePath);
+                if (!fileInfo.Exists)
+                {
+                    actualViewPath = $"~/{string.Join("/", actualViewPath.Split('/').Skip(4))}";
+                }
+            }
             ViewEngineResult viewResult = _viewEngine.GetView(null, actualViewPath, true);
 
             if (!viewResult.Success)

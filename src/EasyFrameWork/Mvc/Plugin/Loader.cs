@@ -5,6 +5,7 @@
 using Easy.Extend;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,24 +20,27 @@ namespace Easy.Mvc.Plugin
         public const string PluginFolder = "Plugins";
         private const string PluginInfoFile = "zkea.plugin";
 #if DEBUG
-        private string[] AltDevelopmentPath = new[] { "bin", "Debug", "netcoreapp2.2" };
+        private readonly string[] AltDevelopmentPath = new[] { "bin", "Debug", "netcoreapp3.1" };
 #else
-        private string[] AltDevelopmentPath = new[] { "bin", "Release", "netcoreapp2.2" };
+        private readonly string[] AltDevelopmentPath = new[] { "bin", "Release", "netcoreapp3.1" };
 #endif
-        private static List<AssemblyLoader> Loaders = new List<AssemblyLoader>();
-        private static Dictionary<string, Assembly> LoadedAssemblies = new Dictionary<string, Assembly>();
-        public Loader(IHostingEnvironment hostEnvironment)
+        private readonly static List<AssemblyLoader> Loaders = new List<AssemblyLoader>();
+        private readonly static Dictionary<string, Assembly> LoadedAssemblies = new Dictionary<string, Assembly>();
+        public Loader(IWebHostEnvironment hostEnvironment)
         {
             HostingEnvironment = hostEnvironment;
         }
-        public IHostingEnvironment HostingEnvironment { get; set; }
+        public IWebHostEnvironment HostingEnvironment { get; set; }
         public IEnumerable<IPluginStartup> LoadEnablePlugins(IServiceCollection serviceCollection)
         {
             var start = DateTime.Now;
-            Loaders.AddRange(GetPlugins().Where(m => m.Enable && m.ID.IsNotNullAndWhiteSpace()).Select(m =>
+            List<PluginInfo> availablePlugins = GetPlugins().Where(m => m.Enable && m.ID.IsNotNullAndWhiteSpace()).ToList();
+            Loaders.AddRange(availablePlugins.Select(m =>
             {
-                var loader = new AssemblyLoader();
-                loader.CurrentPath = m.RelativePath;
+                var loader = new AssemblyLoader(availablePlugins)
+                {
+                    CurrentPath = m.RelativePath
+                };
                 var assemblyPath = Path.Combine(m.RelativePath, (HostingEnvironment.IsDevelopment() ? Path.Combine(AltDevelopmentPath) : string.Empty), m.FileName);
 
                 Console.WriteLine("Loading: {0}", m.Name);

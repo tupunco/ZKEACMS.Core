@@ -67,5 +67,7 @@ namespace ZKEACMS
         /// Append system script to page footer
         /// </summary>
         public List<string> Scripts { get; set; }
+        public bool OuterChainPicture { get { return Get<bool>(nameof(OuterChainPicture)); } }
+        public bool EnableResponsiveDesign { get { return Get<bool>(nameof(EnableResponsiveDesign)); } }
     }
 }

@@ -33,10 +33,7 @@ namespace ZKEACMS.Product.Service
 
         public void Publish(int ID)
         {
-            var product = Get(ID);
-            product.IsPublish = true;
-            product.PublishDate = DateTime.Now;
-            base.Update(product);
+            Publish(Get(ID));
         }
         public override ServiceResult<ProductEntity> Add(ProductEntity item)
         {
@@ -183,7 +180,29 @@ namespace ZKEACMS.Product.Service
 
         public ProductEntity GetByUrl(string url)
         {
-            return Get(m => m.Url == url).FirstOrDefault();
+            ProductEntity product= Get(m => m.Url == url).FirstOrDefault();
+            if (product != null)
+            {
+                product.ProductTags = _productCategoryTagService.Get(m => m.ProductCategoryId == product.ProductCategoryID);
+                var tags = _productTagService.Get(m => m.ProductId == product.ID);
+                foreach (var item in product.ProductTags)
+                {
+                    item.Selected = tags.Any(m => m.TagId == item.ID);
+                }
+                product.ProductImages = _productImageService.Get(m => m.ProductId == product.ID);
+            }
+
+            return product;
+        }
+
+        public void Publish(ProductEntity product)
+        {
+            product.IsPublish = true;
+            product.PublishDate = DateTime.Now;
+            if (product.ID > 0)
+            {
+                base.Update(product);
+            }            
         }
     }
 }

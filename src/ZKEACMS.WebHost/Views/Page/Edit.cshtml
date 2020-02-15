@@ -85,7 +85,7 @@
 @using (Script.AtFoot())
 {
     <script type="text/javascript">
-        $(".delete").click(function () {
+        $(".toolBar .delete").click(function () {
             return confirm("@L("删除页面会删除对应的子页面，确定要删除吗？")");
         });
         $(function () {
@@ -98,8 +98,10 @@
             var parentUrl = url.data("url");
             if (!parentUrl) {
                 parentUrl = "~/";
+            }else{
+                parentUrl = parentUrl.toLowerCase();
             }
-            var thisUrl = $(this).val();
+            var thisUrl = $(this).val().toLowerCase();
             var replaceValue = ["/", " ", "?", "`", "~", "!", "@@", "#", "$", "%", "^", "&", "*", "(", ")", "+", "[", "]", "{", "}", "\\", "|", ";", ":", "'", "\"", ",", ".", "<", ">"];
             for (var i = 0; i < replaceValue.length; i++) {
                 thisUrl = thisUrl.replaceAll(replaceValue[i], "-");
